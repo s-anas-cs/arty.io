@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Salary Breakdown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background: #000;
+      color: white;
+      padding: 40px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .user-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .user-link a {
+      font-size: 0.9em;
+      color: #00bfff;
+    }
+
+    .progress-container {
+      width: 96%;
+      max-width: 400px;
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .progress-label {
+      margin-bottom: 8px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #333;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      transition: width 0.3s ease;
+    }
+
+    .fill-yellow { background-color: rgb(226, 226, 84); }
+    .fill-green  { background-color: rgb(9, 253, 94); }
+    .fill-red    { background-color: rgb(246, 76, 76); }
+    .fill-blue   { background-color: dodgerblue; }
+  </style>
+</head>
+<body>
+
+  <!-- Profile Card -->
+  <div class="user-card">
+    <img src="https://avatars.githubusercontent.com/u/30373425?v=4" alt="User Image" />
+    <div class="user-info">
+      <div class="user-name" id="userName">Loading...</div>
+      <div class="user-link">
+        <a href="#" target="_blank" id="userEmailLink">@user</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAF Tax -->
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>PAF Tax – 15%</span>
+      <span id="pafAmount">-</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-yellow" style="width: 15%;"></div>
+    </div>
+  </div>
+
+  <!-- SIS -->
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>SIS – 10%</span>
+      <span id="sisAmount">-</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-green" style="width: 10%;"></div>
+    </div>
+  </div>
+
+  <!-- Income Tax -->
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>Income Tax – 20%</span>
+      <span id="taxAmount">-</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-red" style="width: 20%;"></div>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="progress-container">
+    <div class="progress-label">
+      <span>Remaining Salary – 55%</span>
+      <span id="remainingAmount">-</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill fill-blue" style="width: 55%;"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Step 1: Load user
+    const user = JSON.parse(localStorage.getItem("artyUser"));
+    if (!user || !user.name || !user.email) {
+      alert("Please log in first.");
+      window.location.href = "signin.html";
+    }
+
+    document.getElementById("userName").textContent = user.name;
+    document.getElementById("userEmailLink").textContent = user.email;
+    document.getElementById("userEmailLink").href = "mailto:" + user.email;
+
+    // Step 2: Get income from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const income = parseFloat(urlParams.get("income")) || 0;
+
+    // Step 3: Calculate deductions
+    const paf = income * 0.15;
+    const sis = income * 0.10;
+    const tax = income * 0.20;
+    const remaining = income - paf - sis - tax;
+
+    // Step 4: Display results
+    document.getElementById("pafAmount").innerText = `₨ ${paf.toLocaleString("en-PK")}`;
+    document.getElementById("sisAmount").innerText = `₨ ${sis.toLocaleString("en-PK")}`;
+    document.getElementById("taxAmount").innerText = `₨ ${tax.toLocaleString("en-PK")}`;
+    document.getElementById("remainingAmount").innerText = `₨ ${remaining.toLocaleString("en-PK")}`;
+
+   
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profile & Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      text-decoration: none;
+    }
+
+    body {
+      font-family: Montserrat, sans-serif;
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+      color: white;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+    }
+
+    .user-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .user-link a {
+      font-size: 0.9em;
+      color: #00bfff;
+    }
+
+    .user-link a:hover {
+      text-decoration: underline;
+    }
+
+    .listbox-wrapper {
+      width: 100%;
+      max-width: 360px;
+      background: #0f0f0f;
+      border: 2px solid #1f1f1f;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .listbox-section {
+      margin-bottom: 20px;
+    }
+
+    .listbox-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .listbox-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .listbox-item:hover {
+      background-color: #1f1f1f;
+    }
+
+    .listbox-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 12px;
+      fill: #999;
+    }
+
+    .listbox-texts {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .listbox-main {
+      font-size: 16px;
+      font-weight: 500;
+      color: #f4f4f4;
+    }
+
+    .listbox-desc {
+      font-size: 13px;
+      color: #777;
+    }
+
+    .danger .listbox-item.logout {
+      color: rgb(0, 0, 0);
+    }
+
+    .danger .listbox-item.logout:hover {
+      background-color: #024257;
+    }
+
+    @media (max-width: 500px) {
+      .user-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .user-info {
+        align-items: center;
+      }
+
+      .listbox-wrapper {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Profile Card -->
+  <div class="user-card">
+    <img src="https://avatars.githubusercontent.com/u/30373425?v=4" alt="Profile Pic" />
+    <div class="user-info">
+      <div class="user-name" id="userName">Loading...</div>
+      <div class="user-link">
+        <a href="#" id="userEmail">Loading...</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings List -->
+  <div class="listbox-wrapper">
+    <div class="listbox">
+      <div class="listbox-section">
+        <p class="listbox-title">Settings</p>
+
+        <!-- Salary Info -->
+        <div class="listbox-item">
+          <svg class="listbox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M4 4h16v2H4zm0 7h16v2H4zm0 7h16v2H4z" />
+          </svg>
+          <div class="listbox-texts">
+            <a href="salaryinfo.html"><span class="listbox-main">Salary Info</span></a>
+            <span class="listbox-desc">Details about your salary</span>
+          </div>
+        </div>
+
+        <!-- PAF Tax -->
+        <div class="listbox-item">
+          <svg class="listbox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 21c4.97 0 9-4.03 9-9h-3l4-4 4 4h-3c0 6.08-4.93 11-11 11s-11-4.92-11-11h3l-4-4-4 4h3c0 4.97 4.03 9 9 9z"/>
+          </svg>
+          <div class="listbox-texts">
+            <a href="paftax.html"><span class="listbox-main">PAF Tax</span></a>
+            <span class="listbox-desc">Your professional tax deductions</span>
+          </div>
+        </div>
+
+        <!-- SIS Funds -->
+        <div class="listbox-item">
+          <svg class="listbox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
+          </svg>
+          <div class="listbox-texts">
+            <a href="sistax.html"><span class="listbox-main">SIS Funds</span></a>
+            <span class="listbox-desc">SIS savings & contributions</span>
+          </div>
+        </div>
+
+        <!-- Income Tax -->
+        <div class="listbox-item">
+          <svg class="listbox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#999">
+            <path d="M6 2C4.89 2 4 2.9 4 4V20C4 21.1 4.89 22 6 22H18C19.1 22 20 21.1 20 20V8L14 2H6ZM13 9V3.5L18.5 9H13ZM8 13H16V15H8V13ZM8 17H13V19H8V17Z"/>
+          </svg>
+          <div class="listbox-texts">
+            <a href="incometax.html"><span class="listbox-main">Income Tax</span></a>
+            <span class="listbox-desc">Total income tax</span>
+          </div>
+        </div>
+
+        <!-- Logout -->
+        <div class="listbox-item logout">
+          <svg class="listbox-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M16 13v-2H7V7l-5 5 5 5v-4zM20 3h-8v2h8v14h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/>
+          </svg>
+          <div class="listbox-texts">
+            <a href="index.html" onclick="logoutUser()"><span class="listbox-main">Logout</span></a>
+            <span class="listbox-desc">End session and sign out</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 👇 JavaScript to load user info correctly -->
+ <script>
+  window.onload = function () {
+    const user = JSON.parse(localStorage.getItem("artyUser"));
+
+    if (!user || !user.name || !user.email) {
+      alert("Please log in first.");
+      window.location.href = "signin.html";
+      return;
+    }
+
+    // Set user profile data
+    document.getElementById("userName").textContent = user.name;
+    document.getElementById("userEmail").textContent = user.email;
+    document.getElementById("userEmail").href = "mailto:" + user.email;
+  };
+
+  function logoutUser() {
+    localStorage.removeItem("artyUser");
+  }
+</script>
+
+
+</body>
+</html>

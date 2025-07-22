@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px;
+      color: white;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+    }
+
+    .user-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .user-link a {
+      font-size: 0.9em;
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    .user-link a:hover {
+      text-decoration: underline;
+    }
+
+    .form-group {
+      max-width: 360px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    label {
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      color: #00bfff;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #1a1a1a;
+      color: #fff;
+      font-size: 16px;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    input[type="text"]:focus {
+      border-color: #00bfff;
+    }
+
+    .submit-btn {
+      display: inline-block;
+      text-align: center;
+      padding: 12px 20px;
+      background-color: #00bfff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      max-width: 360px;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 16px;
+    }
+
+    .submit-btn:hover {
+      background-color: #0099cc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Profile Card -->
+<div class="user-card">
+  <img id="userImage" src="https://avatars.githubusercontent.com/u/30373425?v=4" alt="User Image" />
+  <div class="user-info">
+    <div class="user-name" id="userName">Loading...</div>
+    <div class="user-link">
+      <a href="#" target="_blank" id="userEmailLink">@useremail</a>
+    </div>
+  </div>
+</div>
+
+  <!-- Income Form -->
+  <form action="salaryinfo2.html" method="get" style="max-width: 360px; width: 100%;">
+    <div class="form-group">
+      <label for="amount">Income (PKR)</label>
+      <input
+        type="text"
+        id="amount"
+        placeholder="Enter the amount"
+        required
+      />
+    </div>
+    <input type="hidden" id="hiddenIncome" name="income" />
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+
+  
+
+
+  <script>
+  const amountInput = document.getElementById('amount');
+  const hiddenIncome = document.getElementById('hiddenIncome');
+  const form = document.querySelector('form');
+
+  // Format input with commas
+  amountInput.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/[^\d]/g, '');
+    if (value.length > 12) value = value.slice(0, 12);
+    if (value !== "") {
+      e.target.value = parseInt(value, 10).toLocaleString('en-PK');
+    } else {
+      e.target.value = "";
+    }
+  });
+
+  // Block unwanted keys
+  amountInput.addEventListener('keydown', function (e) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+    if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // On submit, set hidden input
+  form.addEventListener('submit', function (e) {
+    const inputVal = amountInput.value.replace(/,/g, '');
+    if (!isNaN(inputVal) && inputVal !== '') {
+      hiddenIncome.value = inputVal;
+    } else {
+      e.preventDefault();
+      alert('Please enter a valid income amount.');
+    }
+  });
+
+  // ✅ Set user profile card from localStorage
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = JSON.parse(localStorage.getItem("artyUser"));
+
+    if (!user || !user.name || !user.email) {
+      alert("Please log in first.");
+      window.location.href = "signin.html";
+      return;
+    }
+
+    document.getElementById("userName").textContent = user.name;
+    document.getElementById("userEmailLink").textContent = "" + user.email;
+    document.getElementById("userEmailLink").href = "mailto:" + user.email;
+  });
+</script>
+
+
+</body>
+</html>

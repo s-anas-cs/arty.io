@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ARTY.io - Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: Montserrat;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 90%;
+      max-width: 400px;
+      padding: 25px;
+      border-radius: 20px;
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #333;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -1px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding-left: 30px;
+      color: #00bfff;
+    }
+
+    .title::before,
+    .title::after {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      left: 0px;
+      background-color: #00bfff;
+    }
+
+    .title::after {
+      animation: pulse 1s linear infinite;
+    }
+
+    .message,
+    .signin {
+      font-size: 14.5px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .signin {
+      text-align: center;
+    }
+
+    .signin a {
+      color: #00bfff;
+    }
+
+    .signin a:hover {
+      text-decoration: underline royalblue;
+    }
+
+    .flex {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .form label {
+      position: relative;
+      width: 100%;
+    }
+
+    @media (min-width: 480px) {
+      .flex label {
+        flex: 1;
+      }
+    }
+
+    .form label .input {
+      background-color: #333;
+      color: #fff;
+      width: 100%;
+      padding: 20px 10px 5px 10px;
+      outline: 0;
+      border: 1px solid rgba(105, 105, 105, 0.4);
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .form label .input + span {
+      color: rgba(255, 255, 255, 0.5);
+      position: absolute;
+      left: 10px;
+      top: 0px;
+      font-size: 0.9em;
+      cursor: text;
+      transition: 0.3s ease;
+    }
+
+    .form label .input:placeholder-shown + span {
+      top: 12.5px;
+      font-size: 0.9em;
+    }
+
+    .form label .input:focus + span,
+    .form label .input:valid + span {
+      color: #00bfff;
+      top: 0px;
+      font-size: 0.7em;
+      font-weight: 600;
+    }
+
+    .submit {
+      border: none;
+      outline: none;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 16px;
+      transition: 0.3s ease;
+      background-color: #00bfff;
+      cursor: pointer;
+    }
+
+    .submit:hover {
+      background-color: #00bfff96;
+    }
+
+    @keyframes pulse {
+      from {
+        transform: scale(0.9);
+        opacity: 1;
+      }
+      to {
+        transform: scale(1.8);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Registration Form -->
+  <form class="form">
+    <p class="title">Register</p>
+    <p class="message">Signup now and get full access to our app.</p>
+
+    <div class="flex">
+      <label>
+        <input id="userfirstname" class="input" type="text" required />
+        <span>Firstname</span>
+      </label>
+
+      <label>
+        <input id="userlastname" class="input" type="text" required />
+        <span>Lastname</span>
+      </label>
+    </div>
+
+    <label>
+      <input id="useremail" class="input" type="email" required />
+      <span>Email</span>
+    </label>
+
+    <label>
+      <input id="userpass" class="input" type="password" required />
+      <span>Password</span>
+    </label>
+
+    <label>
+      <input id="userconfirmpass" class="input" type="password" required />
+      <span>Confirm password</span>
+    </label>
+
+    <button type="button" class="submit" onclick="saveUser()">Submit</button>
+
+    <p class="signin">Already have an account? <a href="index.html">Signin</a></p>
+  </form>
+
+ <script>
+  function saveUser() {
+    const firstName = document.getElementById("userfirstname").value.trim();
+    const lastName = document.getElementById("userlastname").value.trim();
+    const email = document.getElementById("useremail").value.trim();
+    const password = document.getElementById("userpass").value;
+    const confirmPassword = document.getElementById("userconfirmpass").value;
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // ✅ Save user to localStorage
+    localStorage.setItem("artyUser", JSON.stringify({
+      name: firstName + " " + lastName,
+      email: email,
+      password: password
+    }));
+
+    alert("✅ Registration successful!");
+    window.location.href = "interface1.html"; // Redirect to Sign In page
+  }
+</script>
+
+</body>
+</html>

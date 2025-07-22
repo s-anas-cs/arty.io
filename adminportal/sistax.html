@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIS Fund History</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: white;
+      padding: 40px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #1a1a1a;
+      padding: 15px 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+    }
+
+    .user-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .user-link a {
+      font-size: 0.9em;
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    .user-link a:hover {
+      text-decoration: underline;
+    }
+
+    .history-container {
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .history-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #00ff88;
+    }
+
+    .progress-container {
+      background-color: #1a1a1a;
+      border-radius: 10px;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: #333;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: #6eebb1;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- User Profile -->
+  <div class="user-card">
+    <img src="https://avatars.githubusercontent.com/u/30373425?v=4" alt="Profile Image" />
+    <div class="user-info">
+      <div class="user-name" id="displayName">Loading...</div>
+      <div class="user-link">
+        <a href="#" id="displayEmail">Loading...</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIS Fund History -->
+  <div class="history-container">
+    <h2>SIS Fund History – 10%</h2>
+    <div id="sisHistory"></div>
+    <div id="totalSISContainer"></div>
+  </div>
+
+  <script>
+  const user = JSON.parse(localStorage.getItem("artyUser"));
+
+  if (!user) {
+    alert("Login required.");
+    window.location.href = "signin.html";
+  } else {
+    document.getElementById("displayName").innerText = user.name || "Unknown";
+    document.getElementById("displayEmail").innerText = user.email || "No email";
+    document.getElementById("displayEmail").href = "mailto:" + user.email;
+  }
+
+  // 💡 Define custom SIS per user here
+  const sisByUser = {
+    "haiderali88@arty.io": 99000,
+    "abbasali76@arty.io": 49500,
+    "ayanali@arty.io": 39600,
+    "ashanaziz87@arty.io": 36300,
+    "ahmedtoso@arty.io": 21450,
+    "mahzarahmed@arty.io": 21450
+  };
+
+  const sisRate = 0.10;
+  let sisPerMonth = 0;
+
+  if (sisByUser[user.email]) {
+    sisPerMonth = sisByUser[user.email];
+  } else {
+    // Fallback: Use salary if not defined above
+    const salary = parseFloat(localStorage.getItem(`salary_${user.email}`)) || 0;
+    sisPerMonth = salary * sisRate;
+  }
+
+  const startMonth = new Date("2025-01-01");
+  const now = new Date();
+  const sisContainer = document.getElementById("sisHistory");
+  const totalSISContainer = document.getElementById("totalSISContainer");
+
+  let current = new Date(startMonth);
+  let total = 0;
+
+  while (
+    current.getFullYear() < now.getFullYear() ||
+    (current.getFullYear() === now.getFullYear() && current.getMonth() <= now.getMonth())
+  ) {
+    const monthYear = current.toLocaleString("default", { month: "long", year: "numeric" });
+    const container = document.createElement("div");
+    container.classList.add("progress-container");
+
+    container.innerHTML = `
+      <div class="progress-label">
+        <span>${monthYear}</span>
+        <span>Rs. ${sisPerMonth.toLocaleString("en-PK")}</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+    `;
+
+    sisContainer.appendChild(container);
+    total += sisPerMonth;
+    current.setMonth(current.getMonth() + 1);
+  }
+
+  const totalContainer = document.createElement("div");
+  totalContainer.classList.add("progress-container");
+  totalContainer.innerHTML = `
+    <div class="progress-label" style="justify-content: center; color: #00ff88;">
+      <strong>Total SIS Fund: Rs. ${total.toLocaleString("en-PK")}</strong>
+    </div>
+  `;
+  totalSISContainer.appendChild(totalContainer);
+</script>
+
+
+</body>
+</html>

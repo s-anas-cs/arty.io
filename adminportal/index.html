@@ -66,7 +66,7 @@
       background-color: #333;
       color: #fff;
       width: 100%;
-      padding: 20px 10px 5px 10px;
+      padding: 20px 40px 5px 10px;
       outline: none;
       border: 1px solid rgba(105, 105, 105, 0.4);
       border-radius: 10px;
@@ -126,6 +126,21 @@
       text-decoration: underline;
     }
 
+    .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      fill: #888;
+      width: 20px;
+      height: 20px;
+    }
+
+    .eye-icon:hover {
+      fill: #00bfff;
+    }
+
     @keyframes pulse {
       from {
         transform: scale(0.9);
@@ -152,6 +167,10 @@
     <label>
       <input id="loginPassword" class="input" type="password" required />
       <span>Password</span>
+      <svg class="eye-icon" onclick="togglePassword()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path id="eyeIcon" d="M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+        <circle id="pupil" cx="12" cy="12" r="2.5"/>
+      </svg>
     </label>
 
     <button type="button" class="submit" onclick="loginUser()">Login</button>
@@ -161,43 +180,55 @@
 
   <!-- ✅ JavaScript -->
   <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("loginPassword");
+      const eyeIcon = document.getElementById("eyeIcon");
+      const pupil = document.getElementById("pupil");
 
-  function loginUser() {
-    const enteredEmail = document.getElementById("loginEmail").value.trim();
-    const enteredPassword = document.getElementById("loginPassword").value;
-
-    const users = [
-      { name: "Haider Ali", email: "haiderali88@arty.io", password: "artyioheadlead" },
-      { name: "Abbas Ali", email: "abbasali76@arty.io", password: "artyioteamlead" },
-      { name: "Ayan Ali", email: "ayanali@arty.io", password: "artyioproject" },
-      { name: "Ahsan Aziz", email: "ashanaziz87@arty.io", password: "artyioprojectlead" },
-      { name: "Ahmed Toso", email: "ahmedtoso@arty.io", password: "artyioproject2" },
-      { name: "Mahzar Ahmed", email: "mahzarahmed@arty.io", password: "artyioproject3" }
-    ];
-
-    const userByEmail = users.find(user => user.email === enteredEmail);
-
-    if (!userByEmail) {
-      alert("❌ No account found with this email.");
-      return;
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.setAttribute("d", "M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z");
+        pupil.setAttribute("r", "0"); // Hide pupil for open eye
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.setAttribute("d", "M12 5c-7 0-10 7-10 7s3 7 10 7 10-7 10-7-3-7-10-7zm0 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10z");
+        pupil.setAttribute("r", "2.5"); // Show pupil
+      }
     }
 
-    if (userByEmail.password !== enteredPassword) {
-      alert("❌ Wrong password. Please try again.");
-      return;
+    function loginUser() {
+      const enteredEmail = document.getElementById("loginEmail").value.trim();
+      const enteredPassword = document.getElementById("loginPassword").value;
+
+      const users = [
+        { name: "Haider Ali", email: "haiderali88@arty.io", password: "artyioheadlead" },
+        { name: "Abbas Ali", email: "abbasali76@arty.io", password: "artyioteamlead" },
+        { name: "Ayan Ali", email: "ayanali@arty.io", password: "artyioproject" },
+        { name: "Ahsan Aziz", email: "ashanaziz87@arty.io", password: "artyioprojectlead" },
+        { name: "Ahmed Toso", email: "ahmedtoso@arty.io", password: "artyioproject2" },
+        { name: "Mahzar Ahmed", email: "mahzarahmed@arty.io", password: "artyioproject3" }
+      ];
+
+      const userByEmail = users.find(user => user.email === enteredEmail);
+
+      if (!userByEmail) {
+        alert("❌ No account found with this email.");
+        return;
+      }
+
+      if (userByEmail.password !== enteredPassword) {
+        alert("❌ Wrong password. Please try again.");
+        return;
+      }
+
+      localStorage.setItem("artyUser", JSON.stringify({
+        name: userByEmail.name,
+        email: userByEmail.email
+      }));
+
+      alert("✅ Login successful!");
+      window.location.href = "interface1.html";
     }
-
-    // ✅ Login successful
-    localStorage.setItem("artyUser", JSON.stringify({
-      name: userByEmail.name,
-      email: userByEmail.email
-    }));
-
-    alert("✅ Login successful!");
-    window.location.href = "interface1.html";
-  }
-
-
   </script>
 
 </body>

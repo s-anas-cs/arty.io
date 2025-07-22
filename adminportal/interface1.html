@@ -148,7 +148,7 @@
 
   <!-- Profile Card -->
   <div class="user-card">
-    <img src="ARTY.io AI SOLUTIONS.png" alt="Profile Pic" />
+    <img src="default.jpg" alt="Profile Pic" />
     <div class="user-info">
       <div class="user-name" id="userName">Loading...</div>
       <div class="user-link">
@@ -222,28 +222,41 @@
     </div>
   </div>
 
-  <!-- 👇 JavaScript to load user info correctly -->
- <script>
-  window.onload = function () {
-    const user = JSON.parse(localStorage.getItem("artyUser"));
+  <!-- Load User Info and Profile Pic -->
+  <script>
+    window.onload = function () {
+      const user = JSON.parse(localStorage.getItem("artyUser"));
 
-    if (!user || !user.name || !user.email) {
-      alert("Please log in first.");
-      window.location.href = "signin.html";
-      return;
+      if (!user || !user.name || !user.email) {
+        alert("Please log in first.");
+        window.location.href = "signin.html";
+        return;
+      }
+
+      document.getElementById("userName").textContent = user.name;
+      document.getElementById("userEmail").textContent = user.email;
+      document.getElementById("userEmail").href = "mailto:" + user.email;
+
+      const profilePic = document.querySelector(".user-card img");
+      const email = user.email.toLowerCase();
+
+      const profilePics = {
+        "haiderali88@arty.io": "haiderheadlead.png",
+        "abbasali76@arty.io": "A.png",
+        "ayanali@arty.io": "A.png",
+        "ashanaziz87@arty.io": "A.png",
+        "ahmedtoso@arty.io": "A.png",
+        "mahzarahmed@arty.io": "M.png"
+      };
+
+      profilePic.src = profilePics[email] || "pics/default.jpg";
+    };
+
+    function logoutUser() {
+      localStorage.removeItem("artyUser");
     }
-
-    // Set user profile data
-    document.getElementById("userName").textContent = user.name;
-    document.getElementById("userEmail").textContent = user.email;
-    document.getElementById("userEmail").href = "mailto:" + user.email;
-  };
-
-  function logoutUser() {
-    localStorage.removeItem("artyUser");
-  }
-</script>
-
+  </script>
 
 </body>
 </html>
+

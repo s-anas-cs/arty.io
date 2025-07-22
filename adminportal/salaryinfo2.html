@@ -180,6 +180,21 @@
     document.getElementById("remainingAmount").innerText = `₨ ${remaining.toLocaleString("en-PK")}`;
 
    
+    
+    // 1️⃣ Profile images per user
+    const profileImages = {
+      "haiderali88@arty.io": "H.png",
+      "abbasali76@arty.io": "A.png",
+      "ayanali@arty.io": "A.png",
+      "ashanaziz87@arty.io": "A.png",
+      "ahmedtoso@arty.io": "A.png",
+      "mahzarahmed@arty.io": "M.png"
+    };
+
+    // 2️⃣ Apply user-specific image
+    const profileImg = document.querySelector(".user-card img");
+    const userImage = profileImages[user.email] || "default-profile.png";
+    profileImg.src = userImage;
 
   </script>
 

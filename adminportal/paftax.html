@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +108,7 @@
 
   <!-- User Profile -->
   <div class="user-card">
-    <img src="ARTY.io AI SOLUTIONS.png" alt="Profile Image" />
+    <img src="default-profile.png" alt="Profile Image" />
     <div class="user-info">
       <div class="user-name" id="displayName">Loading...</div>
       <div class="user-link">
@@ -126,77 +125,92 @@
   </div>
 
   <script>
-  const user = JSON.parse(localStorage.getItem("artyUser"));
+    const user = JSON.parse(localStorage.getItem("artyUser"));
 
-  if (!user) {
-    alert("Login required.");
-    window.location.href = "signin.html";
-  } else {
-    document.getElementById("displayName").innerText = user.name || "Unknown";
-    document.getElementById("displayEmail").innerText = user.email || "No email";
-    document.getElementById("displayEmail").href = "mailto:" + user.email;
-  }
+    if (!user) {
+      alert("Login required.");
+      window.location.href = "signin.html";
+    } else {
+      document.getElementById("displayName").innerText = user.name || "Unknown";
+      document.getElementById("displayEmail").innerText = user.email || "No email";
+      document.getElementById("displayEmail").href = "mailto:" + user.email;
+    }
 
-  // 💡 Define custom PAF tax per user here
-  const pafByUser = {
-    "haiderali88@arty.io": 148500,
-    "abbasali76@arty.io": 74250,
-    "ayanali@arty.io": 59400,
-    "ashanaziz87@arty.io": 54450,
-    "ahmedtoso@arty.io": 32100,
-    "mahzarahmed@arty.io": 32100
-  };
+    // 1️⃣ Profile images per user
+    const profileImages = {
+      "haiderali88@arty.io": "H.png",
+      "abbasali76@arty.io": "A.png",
+      "ayanali@arty.io": "A.png",
+      "ashanaziz87@arty.io": "A.png",
+      "ahmedtoso@arty.io": "A.png",
+      "mahzarahmed@arty.io": "M.png"
+    };
 
-  const pafRate = 0.15;
-  let pafPerMonth = 0;
+    // 2️⃣ Apply user-specific image
+    const profileImg = document.querySelector(".user-card img");
+    const userImage = profileImages[user.email] || "default-profile.png";
+    profileImg.src = userImage;
 
-  if (pafByUser[user.email]) {
-    pafPerMonth = pafByUser[user.email];
-  } else {
-    const salary = parseFloat(localStorage.getItem(`salary_${user.email}`)) || 0;
-    pafPerMonth = salary * pafRate;
-  }
+    // 💡 Custom PAF tax per user
+    const pafByUser = {
+      "haiderali88@arty.io": 148500,
+      "abbasali76@arty.io": 74250,
+      "ayanali@arty.io": 59400,
+      "ashanaziz87@arty.io": 54450,
+      "ahmedtoso@arty.io": 32100,
+      "mahzarahmed@arty.io": 32100
+    };
 
-  const startMonth = new Date("2025-01-01");
-  const now = new Date();
-  const pafContainer = document.getElementById("pafHistory");
-  const totalPAFContainer = document.getElementById("totalPAFContainer");
+    const pafRate = 0.15;
+    let pafPerMonth = 0;
 
-  let current = new Date(startMonth);
-  let total = 0;
+    if (pafByUser[user.email]) {
+      pafPerMonth = pafByUser[user.email];
+    } else {
+      const salary = parseFloat(localStorage.getItem(`salary_${user.email}`)) || 0;
+      pafPerMonth = salary * pafRate;
+    }
 
-  while (
-    current.getFullYear() < now.getFullYear() ||
-    (current.getFullYear() === now.getFullYear() && current.getMonth() <= now.getMonth())
-  ) {
-    const monthYear = current.toLocaleString("default", { month: "long", year: "numeric" });
-    const container = document.createElement("div");
-    container.classList.add("progress-container");
+    const startMonth = new Date("2025-01-01");
+    const now = new Date();
+    const pafContainer = document.getElementById("pafHistory");
+    const totalPAFContainer = document.getElementById("totalPAFContainer");
 
-    container.innerHTML = `
-      <div class="progress-label">
-        <span>${monthYear}</span>
-        <span>Rs. ${pafPerMonth.toLocaleString("en-PK")}</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill"></div>
+    let current = new Date(startMonth);
+    let total = 0;
+
+    while (
+      current.getFullYear() < now.getFullYear() ||
+      (current.getFullYear() === now.getFullYear() && current.getMonth() <= now.getMonth())
+    ) {
+      const monthYear = current.toLocaleString("default", { month: "long", year: "numeric" });
+      const container = document.createElement("div");
+      container.classList.add("progress-container");
+
+      container.innerHTML = `
+        <div class="progress-label">
+          <span>${monthYear}</span>
+          <span>Rs. ${pafPerMonth.toLocaleString("en-PK")}</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill"></div>
+        </div>
+      `;
+
+      pafContainer.appendChild(container);
+      total += pafPerMonth;
+      current.setMonth(current.getMonth() + 1);
+    }
+
+    const totalContainer = document.createElement("div");
+    totalContainer.classList.add("progress-container");
+    totalContainer.innerHTML = `
+      <div class="progress-label" style="justify-content: center; color: #ecff81;">
+        <strong>Total PAF Tax: Rs. ${total.toLocaleString("en-PK")}</strong>
       </div>
     `;
-
-    pafContainer.appendChild(container);
-    total += pafPerMonth;
-    current.setMonth(current.getMonth() + 1);
-  }
-
-  const totalContainer = document.createElement("div");
-  totalContainer.classList.add("progress-container");
-  totalContainer.innerHTML = `
-    <div class="progress-label" style="justify-content: center; color: #ecff81;">
-      <strong>Total PAF Tax: Rs. ${total.toLocaleString("en-PK")}</strong>
-    </div>
-  `;
-  totalPAFContainer.appendChild(totalContainer);
-</script>
+    totalPAFContainer.appendChild(totalContainer);
+  </script>
 
 </body>
 </html>

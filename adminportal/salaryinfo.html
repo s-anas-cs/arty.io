@@ -119,15 +119,15 @@
 <body>
 
   <!-- Profile Card -->
-<div class="user-card">
-  <img id="userImage" src="ARTY.io AI SOLUTIONS.png" alt="User Image" />
-  <div class="user-info">
-    <div class="user-name" id="userName">Loading...</div>
-    <div class="user-link">
-      <a href="#" target="_blank" id="userEmailLink">@useremail</a>
+  <div class="user-card">
+    <img id="userImage" src="default-profile.png" alt="User Image" />
+    <div class="user-info">
+      <div class="user-name" id="userName">Loading...</div>
+      <div class="user-link">
+        <a href="#" target="_blank" id="userEmailLink">@useremail</a>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- Income Form -->
   <form action="salaryinfo2.html" method="get" style="max-width: 360px; width: 100%;">
@@ -144,60 +144,72 @@
     <button type="submit" class="submit-btn">Submit</button>
   </form>
 
-  
-
-
   <script>
-  const amountInput = document.getElementById('amount');
-  const hiddenIncome = document.getElementById('hiddenIncome');
-  const form = document.querySelector('form');
+    const amountInput = document.getElementById('amount');
+    const hiddenIncome = document.getElementById('hiddenIncome');
+    const form = document.querySelector('form');
 
-  // Format input with commas
-  amountInput.addEventListener('input', function (e) {
-    let value = e.target.value.replace(/[^\d]/g, '');
-    if (value.length > 12) value = value.slice(0, 12);
-    if (value !== "") {
-      e.target.value = parseInt(value, 10).toLocaleString('en-PK');
-    } else {
-      e.target.value = "";
-    }
-  });
+    // Format input with commas
+    amountInput.addEventListener('input', function (e) {
+      let value = e.target.value.replace(/[^\d]/g, '');
+      if (value.length > 12) value = value.slice(0, 12);
+      if (value !== "") {
+        e.target.value = parseInt(value, 10).toLocaleString('en-PK');
+      } else {
+        e.target.value = "";
+      }
+    });
 
-  // Block unwanted keys
-  amountInput.addEventListener('keydown', function (e) {
-    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
-    if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
-      e.preventDefault();
-    }
-  });
+    // Block unwanted keys
+    amountInput.addEventListener('keydown', function (e) {
+      const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+      if (!/^\d$/.test(e.key) && !allowedKeys.includes(e.key)) {
+        e.preventDefault();
+      }
+    });
 
-  // On submit, set hidden input
-  form.addEventListener('submit', function (e) {
-    const inputVal = amountInput.value.replace(/,/g, '');
-    if (!isNaN(inputVal) && inputVal !== '') {
-      hiddenIncome.value = inputVal;
-    } else {
-      e.preventDefault();
-      alert('Please enter a valid income amount.');
-    }
-  });
+    // On submit, set hidden input
+    form.addEventListener('submit', function (e) {
+      const inputVal = amountInput.value.replace(/,/g, '');
+      if (!isNaN(inputVal) && inputVal !== '') {
+        hiddenIncome.value = inputVal;
+      } else {
+        e.preventDefault();
+        alert('Please enter a valid income amount.');
+      }
+    });
 
-  // ✅ Set user profile card from localStorage
-  window.addEventListener('DOMContentLoaded', () => {
-    const user = JSON.parse(localStorage.getItem("artyUser"));
+    // ✅ DOMContentLoaded: Set user data and profile image
+    window.addEventListener('DOMContentLoaded', () => {
+      const user = JSON.parse(localStorage.getItem("artyUser"));
 
-    if (!user || !user.name || !user.email) {
-      alert("Please log in first.");
-      window.location.href = "signin.html";
-      return;
-    }
+      if (!user || !user.name || !user.email) {
+        alert("Please log in first.");
+        window.location.href = "signin.html";
+        return;
+      }
 
-    document.getElementById("userName").textContent = user.name;
-    document.getElementById("userEmailLink").textContent = "" + user.email;
-    document.getElementById("userEmailLink").href = "mailto:" + user.email;
-  });
-</script>
+      // Set name and email
+      document.getElementById("userName").textContent = user.name;
+      document.getElementById("userEmailLink").textContent = user.email;
+      document.getElementById("userEmailLink").href = "mailto:" + user.email;
 
+      // Profile images per user
+      const profileImages = {
+        "haiderali88@arty.io": "H.png",
+        "abbasali76@arty.io": "A.png",
+        "ayanali@arty.io": "A.png",
+        "ashanaziz87@arty.io": "A.png",
+        "ahmedtoso@arty.io": "A.png",
+        "mahzarahmed@arty.io": "M.png"
+      };
+
+      // Apply user-specific image
+      const profileImg = document.getElementById("userImage");
+      const userImage = profileImages[user.email] || "default-profile.png";
+      profileImg.src = userImage;
+    });
+  </script>
 
 </body>
 </html>

@@ -255,6 +255,66 @@
     function logoutUser() {
       localStorage.removeItem("artyUser");
     }
+
+  // ... (existing window.onload function) ...
+
+  window.onload = function () {
+    const user = JSON.parse(localStorage.getItem("artyUser"));
+
+    if (!user || !user.name || !user.email) {
+      alert("Please log in first.");
+      window.location.href = "index.html"; // Redirect to Sign In
+      return;
+    }
+
+    // Set user info
+    document.getElementById("userName").textContent = user.name;
+    document.getElementById("userEmailLink").textContent = user.email;
+    document.getElementById("userEmailLink").href = "mailto:" + user.email;
+
+    // 👇 Access Control Logic
+    if (user.role === 'new_user') {
+        // Get all list items except the last one (Logout)
+        const listItems = document.querySelectorAll('.listbox-wrapper .listbox-item:not(.logout)');
+        
+        listItems.forEach(item => {
+            // Find the <a> tag inside the list item
+            const link = item.querySelector('a');
+            
+            // Check if the link is NOT the Salary Breakdown page (salaryinfo2.html)
+            // Salary Breakdown form is salaryinfo.html, the result is salaryinfo2.html
+            // Assuming the 'Income Form' (salaryinfo.html) is the entry point
+            if (link && !link.href.includes('salaryinfo.html')) {
+                // Lock the link: change cursor, add 'locked' class, and remove actual href
+                item.classList.add('locked-access');
+                link.removeAttribute('href');
+                link.style.pointerEvents = 'none'; // Disable clicking on text
+                
+                // Optional: Change description to show it's locked
+                const desc = item.querySelector('.listbox-desc');
+                if (desc) {
+                    desc.textContent = "🔒 Access Denied. Contact Admin.";
+                }
+            }
+        });
+
+        // Add CSS for the locked state (if not already present in the <style> block)
+        const style = document.createElement('style');
+        style.textContent = `
+            .locked-access {
+                opacity: 0.4;
+                cursor: not-allowed !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    // 👆 End of Access Control Logic
+  };
+
+  function logoutUser() {
+    localStorage.removeItem("artyUser");
+  }
+
   </script>
 
 </body>

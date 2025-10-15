@@ -227,6 +227,42 @@
     alert("✅ Registration successful!");
     window.location.href = "interface1.html"; // Redirect to Sign In page
   }
+
+
+  
+  function saveUser() {
+    // 👇 Missing variables ko add kiya gaya hai
+    const firstName = document.getElementById("userfirstname").value.trim();
+    const lastName = document.getElementById("userlastname").value.trim();
+    const email = document.getElementById("useremail").value.trim();
+    const password = document.getElementById("userpass").value;
+    const confirmPassword = document.getElementById("userconfirmpass").value;
+
+    // Validation check (Jo code upar se missing tha)
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    // ✅ Save user to localStorage with a default 'role' (Aapka diya hua logic)
+    localStorage.setItem("artyUser", JSON.stringify({
+      name: firstName + " " + lastName,
+      email: email,
+      password: password,
+      // 👇 Naya field: 'new_user' role add kiya
+      role: 'new_user'
+    }));
+
+    // ✅ Redirect to interface1.html on successful registration
+    alert("✅ Registration successful! Redirecting to dashboard.");
+    window.location.href = "interface1.html";
+  }
+
 </script>
 
 </body>

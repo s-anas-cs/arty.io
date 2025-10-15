@@ -210,6 +210,29 @@
       </div>
     `;
     totalPAFContainer.appendChild(totalContainer);
+
+
+   
+  // ... (existing code for calculating tax/paf/sis) ...
+
+  // 👇 Access Control Logic: Block 'new_user' role
+  window.onload = function() {
+    const user = JSON.parse(localStorage.getItem("artyUser"));
+
+    if (!user || !user.name || !user.email) {
+      alert("Please log in first.");
+      window.location.href = "index.html";
+      return;
+    }
+
+    if (user.role === 'new_user') {
+      alert("❌ Access Denied. You do not have permission to view this history.");
+      window.location.href = "interface1.html"; // Redirect to Dashboard
+      return;
+    }
+    
+    // ... (Remaining page specific logic like generateHistory, etc.) ...
+  }
   </script>
 
 </body>
